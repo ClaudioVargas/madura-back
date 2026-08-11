@@ -9,6 +9,7 @@ from app.schemas.user import UsuarioCreate, UsuarioOut
 
 router = APIRouter()
 
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 1 day
 
 @router.post("/token", response_model=Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -17,7 +18,9 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
     token = create_access_token({"user_id": user.id, "rol": user.rol})
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token,
+            "token_type": "bearer", 
+            "expires_in":  ACCESS_TOKEN_EXPIRE_MINUTES * 60}  # Ajusta el tiempo de expiración según tu configuración
 
 
 @router.post("/register", response_model=UsuarioOut)

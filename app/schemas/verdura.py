@@ -1,12 +1,12 @@
-from pydantic import BaseModel, confloat, conint
+from pydantic import BaseModel, Field
 from typing import Optional
 
 
 class VerduraBase(BaseModel):
     nombre: str
     tipo: Optional[str]
-    precio: confloat(gt=0)
-    stock: conint(ge=0)
+    precio: float = Field(gt=0)
+    stock: float = Field(gt=0)
 
 
 class VerduraCreate(VerduraBase):
@@ -16,5 +16,6 @@ class VerduraCreate(VerduraBase):
 class VerduraOut(VerduraBase):
     id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True  # 🟢 Nueva sintaxis de Pydantic V2
+    }

@@ -11,5 +11,6 @@ class FotoOut(BaseModel):
     url: HttpUrl
     usuario_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True  # 🟢 Nueva sintaxis de Pydantic V2
+    }

@@ -1,11 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from typing import List
 from sqlalchemy.orm import Session
 from app.schemas.photo import FotoCreate, FotoOut
 from app.security.deps import get_db, require_role
+from app.services.fruta_service import evaluate_fruit
 from app.services.photo_service import create_foto, list_fotos, get_foto, delete_foto
 
 router = APIRouter()
+
+@router.post("/evaluate")
+async def evaluate_fruit_endpoint(file: UploadFile = File(...)):
+    print(f"Received file: {file.filename}")
+    result = evaluate_fruit(file.file)
+    return {"estado": result}
+
 
 
 @router.get("/", response_model=List[FotoOut])

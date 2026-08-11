@@ -1,17 +1,40 @@
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 from app import models
 from app.schemas.user import UsuarioCreate
+import bcrypt
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    try:
+        # Bcrypt requiere que el texto sea convertido a bytes (.encode)
+        password_bytes = password.encode("utf-8")
+        
+        # Genera la sal y crea el hash
+        salt = bcrypt.gensalt()
+        hashed_bytes = bcrypt.hashpw(password_bytes, salt)
+        
+        # Retorna el hash como un string normal para guardarlo en la Base de Datos
+        return hashed_bytes.decode("utf-8")
+        
+    except Exception as error:
+        print(f"Error al encriptar la contraseña: {error}")
+        raise error
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    """Compara una contraseña del login con el hash guardado en la BD."""
+    try:
+        password_bytes = plain.encode("utf-8")
+        hashed_bytes = hashed.encode("utf-8") if isinstance(hashed, str) else hashed
+        print(f"Verifying password. password_bytes: {password_bytes}, hashed_bytes: {hashed_bytes}")  # Debugging line to check the values
+        return bcrypt.checkpw(password_bytes, hashed_bytes)
+    except Exception as error:
+        # Esto te mostrará la línea exacta y la razón del fallo en la consola
+        print(f"❌ ERROR CRÍTICO EN VERIFY_PASSWORD: {error}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 
 def create_user(db: Session, user_in: UsuarioCreate):
@@ -27,6 +50,7 @@ def create_user(db: Session, user_in: UsuarioCreate):
 
 
 def get_user_by_email(db: Session, email: str):
+    print(f"Querying for user with email: {email}")  # Debugging line to check the email being queried
     return db.query(models.Usuario).filter(models.Usuario.email == email).first()
 
 

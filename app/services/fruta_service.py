@@ -1,6 +1,18 @@
+import numpy as np
 from sqlalchemy.orm import Session
 from app import models
+from app.models.fruit_model import FruitModel
 from app.schemas.fruta import FrutaCreate
+from app.utils.image_utils import preprocess_image
+
+fruit_model = FruitModel()
+def evaluate_fruit(image_file):
+    img_array = preprocess_image(image_file)
+    prediction = fruit_model.predict(img_array)
+    label = int(np.argmax(prediction))
+
+    states = {0: "verde", 1: "madura", 2: "pasada"}
+    return states.get(label, "desconocido")
 
 
 def create_fruta(db: Session, fruta_in: FrutaCreate, creador_id: int | None = None):
