@@ -1,0 +1,70 @@
+# --- Python ---
+__pycache__/
+**/__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Ignorar carpetas de caché de Python
+
+
+# Ignorar modelos pesados de Machine Learning
+*.keras
+*.h5
+
+# --- Entornos Virtuales ---
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Variables de Entorno (¡Seguridad!) ---
+.env
+.env.[a-zA-Z]*
+!.env.example
+
+# --- FastAPI / Uvicorn / Logs ---
+*.log
+log.txt
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- Base de Datos Local (SQLite / Migraciones) ---
+*.db
+*.sqlite3
+# Descomenta la siguiente línea si no quieres subir tus migraciones de Alembic:
+# alembic/versions/*
+
+# --- Editores de Código y Sistema ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
