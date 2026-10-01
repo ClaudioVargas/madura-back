@@ -1,9 +1,11 @@
+
 from pydantic import BaseModel, HttpUrl
 
 
 class FotoCreate(BaseModel):
     url: HttpUrl
-    usuario_id: int
+    # Opcional: si no se envía, el backend usa el id del usuario autenticado.
+    usuario_id: int | None = None
 
 
 class FotoOut(BaseModel):
@@ -12,5 +14,5 @@ class FotoOut(BaseModel):
     usuario_id: int
 
     model_config = {
-        "from_attributes": True  # 🟢 Nueva sintaxis de Pydantic V2
+        "from_attributes": True
     }

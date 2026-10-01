@@ -1,12 +1,12 @@
+
 from pydantic import BaseModel, Field
-from typing import Optional
 
 
 class VerduraBase(BaseModel):
     nombre: str
-    tipo: Optional[str]
+    tipo: str | None = None
     precio: float = Field(gt=0)
-    stock: float = Field(gt=0)
+    stock: int = Field(gt=0)
 
 
 class VerduraCreate(VerduraBase):
@@ -17,5 +17,5 @@ class VerduraOut(VerduraBase):
     id: int
 
     model_config = {
-        "from_attributes": True  # 🟢 Nueva sintaxis de Pydantic V2
+        "from_attributes": True
     }

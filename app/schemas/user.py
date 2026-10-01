@@ -1,11 +1,11 @@
+
 from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
 
 
 class UsuarioCreate(BaseModel):
     nombre: str
     email: EmailStr
-    password: str = Field(min_length=6)
+    password: str = Field(min_length=8, description="Mínimo 8 caracteres")
 
 
 class UsuarioOut(BaseModel):
@@ -15,12 +15,12 @@ class UsuarioOut(BaseModel):
     rol: str
 
     model_config = {
-        "from_attributes": True  # 🟢 Nueva sintaxis de Pydantic V2
+        "from_attributes": True
     }
 
 
 class UsuarioUpdate(BaseModel):
-    nombre: Optional[str]
-    email: Optional[EmailStr]
-    password: Optional[str] = Field(min_length=6)
-    rol: Optional[str]
+    nombre: str | None = None
+    email: EmailStr | None = None
+    password: str | None = Field(default=None, min_length=8, description="Mínimo 8 caracteres")
+    rol: str | None = None

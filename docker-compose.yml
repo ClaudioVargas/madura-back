@@ -1,0 +1,12 @@
+services:
+  madura-back:
+    image: srdarus/madura_back:v1
+    build: .
+    container_name: madura_back
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/madura.db
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
